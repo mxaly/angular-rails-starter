@@ -73,7 +73,9 @@ module.exports = function (grunt) {
         options: {
           open: true,
           middleware: function (connect) {
+            var proxyConnect = require('grunt-connect-proxy/lib/utils').proxyRequest;
             return [
+              proxyConnect,
               connect.static('.tmp'),
               connect().use(
                 '/bower_components',
@@ -411,6 +413,7 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-connect-proxy');
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -422,6 +425,7 @@ module.exports = function (grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer',
+      'configureProxies:connect',
       'connect:livereload',
       'watch'
     ]);
